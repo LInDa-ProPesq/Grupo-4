@@ -1,0 +1,169 @@
+---
+title: "Análise dados censitários"
+author: "Grupo 4 - Eloisa, Isabele, Juliana, Letícia, Mariana"
+date: "26 de novembro de 2018"
+output: pdf_document
+---
+
+``````{r echo=FALSE, message=FALSE, warning=FALSE}
+library("readxl")
+library("tidyverse")
+library("tinytex")
+library("dplyr")
+library("RColorBrewer")
+#lendo xls
+dados <- read_excel("dados/umses_graduacao_2018_vtidy.xlsx")
+```
+
+## Análise de gênero 
+
+O gráfico abaixo representa a distribuição de gênero do público partipante da pesquisa.
+```{r, fig.align="center", echo=FALSE, warning=FALSE}
+
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), genero)
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+ns <- filter(colunas, genero == 1) 
+masc <- filter(colunas, genero == 2) 
+fem <- filter(colunas, genero == 3) 
+
+
+#quantidade de pessoas 
+ns <- nrow(ns)
+masc <- nrow(masc)
+fem <- nrow(fem)
+
+
+#guardando num lugar pra passar pro grafico
+x <- c(ns,masc,fem)
+
+lbls <- c("Prefiro não dizer", "Masculino", "Feminino")
+quantidade <- length(lbls)
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Gênero Público", col=rainbow(quantidade))
+
+```
+ Como pode ser observado, a maioria dos respondentes da pesquisa são do gênero masculino, com 60,7%. 
+ A minoria feminina pode ser explicada por muitos fatores, mas iremos olhar do ponto de vista de se tratar de um curso de tecnologia. As razões para a representatividade feminina ser tão baixa estão fortemente relacionada com estereótipos. Ainda hoje, muitas meninas não são incentivadas a interagir com as máquinas/computadores e por isso, começam a se afastar de áreas relacionadas à computação ou exatas. 
+
+ 
+## Análise de idade 
+
+O gráfico abaixo representa a distribuição de idade do público partipante da pesquisa.
+```{r, fig.align="center", echo=FALSE, warning=FALSE}
+
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), idade)
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+dezesseis <- filter(colunas,idade == 1) 
+vincinco <- filter(colunas, idade == 2) 
+vinseis <- filter(colunas, idade == 3) 
+trinta <- filter(colunas, idade == 4)
+trintaseis <- filter(colunas, idade == 5)
+acima <- filter(colunas, idade == 6)
+
+#quantidade de pessoas 
+dezesseis <- nrow(dezesseis)
+vincinco <- nrow(vincinco) 
+vinseis <- nrow(vinseis) 
+trinta <- nrow(trinta)
+trintaseis <- nrow(trintaseis)
+acima <- nrow(acima)
+
+
+#guardando num lugar pra passar pro grafico
+idade <- c(dezesseis, vincinco, vinseis, trinta, trintaseis, acima)
+
+lbls <- c("Entre 16 e 20 anos", "Entre 21 e 25 anos", "Entre 26 e 30 anos", "Entre 30 e 35 anos" , "Entre 36 e 40 anos", "Acima de 40 anos")
+quantidade <- length(lbls)
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+barplot(idade, legend=lbls, main="Idade público", xlab="Idade",ylab= "Nº de Público",col=rainbow(quantidade))
+
+ ```
+ 
+ Como pode ser observado, a maioria dos partipantes se enquadra nos jovens de 21 e 25 anos. Fator explicado pelo fato de que os alunos que cursam a disciplina e tiveram acesso ao questionário são do terceiro ou quarto ano do curso de Sistemas de Informação.
+ 
+```
+
+## Análise de situação trabalhista atual
+
+O gráfico abaixo representa a distribuição da situação trabalhista atual do público partipante da pesquisa.
+```{r, fig.align="center", echo=FALSE, warning=FALSE}
+#Situação trabalhista atual Público
+
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), trabalha)
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+desempregado <- filter(colunas,  trabalha == 1) 
+jorparcial <- filter(colunas,  trabalha == 2) 
+jorintegral <- filter(colunas,  trabalha == 3) 
+estagiario <- filter(colunas,  trabalha == 4)
+contapropria <- filter(colunas,  trabalha == 5)
+afastado <- filter(colunas,  trabalha == 6)
+aposentado <- filter(colunas,  trabalha == 7)
+bolsista <- filter(colunas,  trabalha == 8)
+
+#quantidade de pessoas 
+desempregado <- nrow(desempregado)
+jorparcial <- nrow(jorparcial) 
+jorintegral <- nrow(jorintegral) 
+estagiario <- nrow(estagiario)
+contapropria <- nrow(contapropria)
+afastado <- nrow(afastado)
+aposentado  <- nrow(aposentado)
+bolsista <- nrow(bolsista)
+
+#guardando num lugar pra passar pro grafico
+x <- c(desempregado, jorparcial, jorintegral, estagiario, contapropria, bolsista, aposentado)
+
+lbls <- c("Desempregado", "Jornada parcial", "Jornada integral", "Estagiário", "Conta própria", "Bolsista", "Aposentado") 
+quantidade <- length(lbls)
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Situação Trabalhista Atual Público", col=rainbow(quantidade))
+
+```
+
+Como pode ser observado, a maioria dos partipantes se encontra em situação trabalhista de desempregado, estagiário ou jornada integral. Esse fator pode ser explicado pela pouca experiência e pelo tempo dispoível dos discentes quando ainda estão na faculdade. Muitos cargos exigem alguma experiência prévia na área de atuação ou uma quantidade de horas por semana que os universitários tem de conciliar com as aulas, fazendo com que os mesmos ou não consigam as vagas por não ter experiência comprovada ou que procurem por estágios com uma menor quantidade de horas exigida.
+
+
+## Análise de estado civil
+
+O gráfico abaixo representa  o estado civil do público partipante da pesquisa.
+```{r, fig.align="center", echo=FALSE, warning=FALSE}
+#Situação trabalhista atual Público
+
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), estadocivil)
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+solteiro <- nrow(filter(colunas,  estadocivil == 1))
+casado <- nrow(filter(colunas,  estadocivil == 2)) 
+ue <- nrow(filter(colunas,  estadocivil == 3)) 
+viuvo <- nrow(filter(colunas,  estadocivil == 4))
+separado <- nrow(filter(colunas,  estadocivil == 5))
+n <- nrow(filter(colunas,  estadocivil == 6))
+
+#guardando num lugar pra passar pro grafico
+x <- c(solteiro, casado)
+
+lbls <- c("Solteiro", "Casado") 
+quantidade <- length(lbls)
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Situação Trabalhista Atual Público", col=rainbow(quantidade))
+
+```
+
+Como pode ser obervado, 98.4% dos participantes tem estado civil de Solteiro(a). Esse fator pode ser explicado pelo faro de que, como já foi analisado anteriormente, a maioria deles se encaixa no perfil de jovens entre 21 e 25 anos, grupo dos Millenials. A geração Y não pensa mais em se casar e ter filhos "tão cedo". Podemos atribuir essa mudança ao planejamento familiar e à consolidação da mulher no mercado de trabalho, adiando casamentos e a chegada de filhos em busca de suas ambições profissionais.
+ 
+ 

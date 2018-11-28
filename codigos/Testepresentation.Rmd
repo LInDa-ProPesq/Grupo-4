@@ -1,0 +1,883 @@
+---
+title: "Análise da pesquisa: Quais são as influências das mídias sociais sobre discentes na unesp?"
+author: "Grupo 4 - Eloisa, Isabele, Juliana, Letícia, Mariana"
+date: "27 de novembro de 2018"
+output: ioslides_presentation
+---
+
+
+``````{r echo=FALSE, message=FALSE, warning=FALSE}
+library("readxl")
+library("tidyverse")
+library("tinytex")
+library("dplyr")
+library("RColorBrewer")
+#lendo xls
+dados <- read_excel("dados/umses_graduacao_2018_vtidy.xlsx")
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+##Introdução
+O objetivo da pesquisa é coletar e analisar informações sobre o uso das mídias sociais pelos discentes da UNESP Bauru.
+
+## Dados censitários
+
+* A seguir serão apresentados as representações gráficas dos seguintes dados:
+- Gênero
+- Idade
+- Situação Trabalhista Atual
+- Estado Civil 
+
+## Gênero
+
+```{r, fig.align="center", echo=FALSE, warning=FALSE}
+
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), genero)
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+ns <- filter(colunas, genero == 1) 
+masc <- filter(colunas, genero == 2) 
+fem <- filter(colunas, genero == 3) 
+
+
+#quantidade de pessoas 
+ns <- nrow(ns)
+masc <- nrow(masc)
+fem <- nrow(fem)
+
+
+#guardando num lugar pra passar pro grafico
+x <- c(ns,masc,fem)
+
+lbls <- c("Prefiro não dizer", "Masculino", "Feminino")
+quantidade <- length(lbls)
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Gênero Público", col=rainbow(quantidade))
+
+```
+
+##Idade
+```{r, fig.align="center", echo=FALSE, warning=FALSE}
+
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), idade)
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+dezesseis <- filter(colunas,idade == 1) 
+vincinco <- filter(colunas, idade == 2) 
+vinseis <- filter(colunas, idade == 3) 
+trinta <- filter(colunas, idade == 4)
+trintaseis <- filter(colunas, idade == 5)
+acima <- filter(colunas, idade == 6)
+
+#quantidade de pessoas 
+dezesseis <- nrow(dezesseis)
+vincinco <- nrow(vincinco) 
+vinseis <- nrow(vinseis) 
+trinta <- nrow(trinta)
+trintaseis <- nrow(trintaseis)
+acima <- nrow(acima)
+
+
+#guardando num lugar pra passar pro grafico
+idade <- c(dezesseis, vincinco, vinseis, trinta, trintaseis, acima)
+
+lbls <- c("Entre 16 e 20 anos", "Entre 21 e 25 anos", "Entre 26 e 30 anos", "Entre 30 e 35 anos" , "Entre 36 e 40 anos", "Acima de 40 anos")
+quantidade <- length(lbls)
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+barplot(idade, legend=lbls, main="Idade público", xlab="Idade",ylab= "Nº de Público",col=rainbow(quantidade))
+
+```
+
+##Situação Trabalhista Atual 
+```{r, fig.align="center", echo=FALSE, warning=FALSE}
+#Situação trabalhista atual Público
+
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), trabalha)
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+desempregado <- filter(colunas,  trabalha == 1) 
+jorparcial <- filter(colunas,  trabalha == 2) 
+jorintegral <- filter(colunas,  trabalha == 3) 
+estagiario <- filter(colunas,  trabalha == 4)
+contapropria <- filter(colunas,  trabalha == 5)
+afastado <- filter(colunas,  trabalha == 6)
+aposentado <- filter(colunas,  trabalha == 7)
+bolsista <- filter(colunas,  trabalha == 8)
+
+#quantidade de pessoas 
+desempregado <- nrow(desempregado)
+jorparcial <- nrow(jorparcial) 
+jorintegral <- nrow(jorintegral) 
+estagiario <- nrow(estagiario)
+contapropria <- nrow(contapropria)
+afastado <- nrow(afastado)
+aposentado  <- nrow(aposentado)
+bolsista <- nrow(bolsista)
+
+#guardando num lugar pra passar pro grafico
+x <- c(desempregado, jorparcial, jorintegral, estagiario, contapropria, bolsista, aposentado)
+
+lbls <- c("Desempregado", "Jornada parcial", "Jornada integral", "Estagiário", "Conta própria", "Bolsista", "Aposentado") 
+quantidade <- length(lbls)
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Situação Trabalhista Atual Público", col=rainbow(quantidade))
+
+```
+
+##Estado Civil
+```{r, fig.align="center", echo=FALSE, warning=FALSE}
+#Situação trabalhista atual Público
+
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), estadocivil)
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+solteiro <- nrow(filter(colunas,  estadocivil == 1))
+casado <- nrow(filter(colunas,  estadocivil == 2)) 
+ue <- nrow(filter(colunas,  estadocivil == 3)) 
+viuvo <- nrow(filter(colunas,  estadocivil == 4))
+separado <- nrow(filter(colunas,  estadocivil == 5))
+n <- nrow(filter(colunas,  estadocivil == 6))
+
+#guardando num lugar pra passar pro grafico
+x <- c(solteiro, casado)
+
+lbls <- c("Solteiro", "Casado") 
+quantidade <- length(lbls)
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Situação Trabalhista Atual Público", col=rainbow(quantidade))
+
+```
+
+## Dados sobre o uso das mídias sociais
+
+* A seguir serão apresentados as representações gráficas dos dados obtidos sobre o uso das mídias sociais:
+- Plataformas mais utilizadas 
+- Motivos pelo qual o pública usa
+- Tempo gasto em redes sociais
+- Opinião sobre mídias serem utilizadas pelos professores
+- Opinião sobre forma de aproximação dos professores
+- Opinião sobre melhora no resultado dos alunos
+
+
+##Plataformas mais utilizadas
+```{r, fig.align="center", echo=FALSE, warning=FALSE}
+
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), facebook, twitter, whatsapp, linkedin, youtube, instagram, snapchat, tumblr, pinterest, outras_plataformas)
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+facebook <- filter(colunas, facebook == 1)
+twitter <- filter(colunas, twitter == 1)
+whatsapp <- filter(colunas, whatsapp == 1)
+linkedin <- filter(colunas, linkedin == 1)
+youtube <- filter(colunas, youtube == 1)
+instagram <- filter(colunas, instagram == 1)
+snapchat <- filter(colunas, snapchat == 1)
+tumblr <- filter(colunas, tumblr == 1)
+pinterest <- filter(colunas, pinterest == 1)
+outras_plataformas <- filter(colunas, outras_plataformas == 1)
+
+#quantidade de pessoas 
+facebook <- nrow(facebook)
+twitter <- nrow(twitter) 
+whatsapp <- nrow(whatsapp) 
+linkedin <- nrow(linkedin)
+youtube <- nrow(youtube)
+instagram <- nrow(instagram)
+snapchat  <- nrow(snapchat)
+tumblr <- nrow(tumblr)
+pinterest <- nrow(pinterest)
+outras_plataformas <- nrow(outras_plataformas)
+
+#guardando num lugar pra passar pro grafico
+x <- c(facebook, twitter, whatsapp, linkedin, youtube, instagram, snapchat, tumblr, pinterest, outras_plataformas)
+
+lbls <- c(" Facebook", "Twitter", "WhatsApp", "Linkedln", "YouTube", "Instagram", "Snapchat", "Tumblr", "Pinterest", "Outro") 
+quantidade <- length(lbls)
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Mídias Sociais Utilizadas pelo Público", col=rainbow(quantidade))
+
+```
+
+##Motivos pelo qual o público usa redes sociais
+```{r, fig.align="center", echo=FALSE, warning=FALSE}
+
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), contato, atualizado,	preencher,	encontrar,	compopiniao,	compfoto,	amigosja,	profnetwork	,novaamizade,	compdetalhe	,outros_motivos)
+
+contato <- nrow(filter(colunas, contato == 1))
+atualizado <- nrow(filter(colunas, atualizado == 1))
+preencher <- nrow(filter(colunas, preencher == 1))
+encontrar <- nrow(filter(colunas, encontrar == 1))
+compopiniao <- nrow(filter(colunas, compopiniao == 1 ))
+compfoto <- nrow(filter(colunas, compfoto == 1))
+amigosja <- nrow(filter(colunas, amigosja == 1))
+profnetwork <- nrow(filter(colunas, profnetwork == 1))
+novaamizade <- nrow(filter(colunas, novaamizade == 1))
+compdetalhe <- nrow(filter(colunas, compdetalhe == 1))
+outros_motivos <- nrow(filter(colunas, outros_motivos == 1))
+
+#guardando num lugar pra passar pro grafico
+x <- c(contato, atualizado, preencher, encontrar, compopiniao, compfoto, amigosja, profnetwork, novaamizade, compdetalhe, outros_motivos)
+
+lbls <- c("Contato com amigos", "Manter-se atualizado", "Preencher o tempo livre", "Conteúdo interessante", "Compart. opiniões" , "Compart. fotos ou vídeos", "Amigos já estão neles", "Networking profissional", "Novas pessoas", "Assuntos de trabalho", "Outras razões") 
+quantidade <- length(lbls)
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Motivos do Público para utilizar mídias sociais", col=rainbow(quantidade))
+
+```` 
+
+##Tempo gasto em redes sociais
+```{r, fig.align="center", echo=FALSE, warning=FALSE}
+
+#Tempo gasto nas midias Público
+
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), tempogasto)
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+nenhum <- nrow(filter(colunas,  tempogasto == 1)) 
+cincocmin <- nrow(filter(colunas,  tempogasto == 2)) 
+dezmin <- nrow(filter(colunas,  tempogasto == 3)) 
+trintamin <- nrow(filter(colunas,  tempogasto == 4))
+umahr <- nrow(filter(colunas,  tempogasto == 5))
+duashrs <- nrow(filter(colunas,  tempogasto == 6))
+treshrs <- nrow(filter(colunas,  tempogasto == 7))
+quatrohrs <- nrow(filter(colunas,  tempogasto == 8))
+maiscinco <- nrow(filter(colunas,  tempogasto == 9))
+
+
+#guardando num lugar pra passar pro grafico
+tempo <- c(nenhum, cincocmin, dezmin, trintamin, umahr, duashrs, treshrs, quatrohrs, maiscinco)
+
+lbls <- c("Nenhum/Não uso", "de 5 a 10 minutes", "de 10 a 30 minutes", "de 30 minutos até 1 hora", "de 1 a 2 horas", "de 2 a 3 horas", "de 3 a 4 horas", "de 4 a 5 horas", "mais de 5 horas") 
+quantidade <- length(lbls)
+barplot(tempo, legend.text = lbls, args.legend = list("topleft", xpd = TRUE, ncol = 1, bty= 5, cex = 0.5), col=rainbow(quantidade),
+        main ="Tempo Gasto em Mídias Sociais pelo Público", xlab = "Tempo gasto", ylab ="Nº de pessoas")
+
+```
+
+##Opinião sobre mídias serem utilizadas pelos professores
+
+```{r, fig.align="center", echo=FALSE, warning=FALSE}
+
+#Tempo gasto nas midias Público
+
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), usoacademico)
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+nao <- filter(colunas, usoacademico == 1 ) 
+sim <- filter(colunas, usoacademico == 2 ) 
+sp <- filter(colunas, usoacademico == 3 ) 
+ns  <- filter(colunas, usoacademico == 4 )
+
+#quantidade de pessoas 
+
+nao1 <- nrow(nao)
+sim1 <- nrow(sim)
+sp1 <- nrow(sp)
+ns1 <- nrow(ns)
+
+
+#guardando num lugar pra passar pro grafico
+x <- c(nao1,sim1, sp1,ns1)
+
+lbls <- c("Não","Sim", "Sim, porém com restrições", "Não sei")
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Midias podem ser utilizadas como ferramenta pelos professores?")
+
+```
+
+##Opinião sobre forma de aproximação dos professores
+```{r, fig.align="center", echo=FALSE, warning=FALSE}
+
+#Tempo gasto nas midias Público
+
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), profchegaal)
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+nao <- filter(colunas, profchegaal == 1 ) 
+sim <- filter(colunas, profchegaal == 2 ) 
+ns  <- filter(colunas, profchegaal == 3 )
+
+#quantidade de pessoas 
+
+nao1 <- nrow(nao)
+sim1 <- nrow(sim)
+ns1 <- nrow(ns)
+
+
+#guardando num lugar pra passar pro grafico
+x <- c(nao1,sim1, ns1)
+
+lbls <- c("Não","Sim", "Não sei")
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Midias são a melhor forma de os professores se aproximarem?")
+
+```
+
+##Opinião sobre melhora no resultado dos alunos
+```{r, fig.align="center", echo=FALSE, warning=FALSE}
+
+#Tempo gasto nas midias Público
+
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), melhoraresul)
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+nao <- filter(colunas, melhoraresul == 1 ) 
+sim <- filter(colunas, melhoraresul == 2 ) 
+ns  <- filter(colunas, melhoraresul == 3 )
+
+#quantidade de pessoas 
+
+nao1 <- nrow(nao)
+sim1 <- nrow(sim)
+ns1 <- nrow(ns)
+
+
+#guardando num lugar pra passar pro grafico
+x <- c(nao1,sim1, ns1)
+
+lbls <- c("Não","Sim", "Não sei")
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Midias podem melhorar o resultado dos alunos?")
+
+```
+
+##Análises - Dados cruzados
+- Cruzamos alguns dados da pesquisa para analisar os resultados de um outro ponto de vista. As análises serão apresentadas a seguir. 
+
+## Análise de opinião sobre mídia como ferramenta e forma de professores se aproximarem
+- O gráfico a seguir mostra a opinião do público que apoia a utilização de mídias como ferramenta de aprendizagem de alunos e que também acredita ou não que essa prática seria a melhor forma de aproximação de alunos com seus respectivos professores.
+
+## Análise de opinião sobre mídia como ferramenta e forma de professores se aproximarem
+```{r, fig.align="center", echo=FALSE, warning=FALSE}
+
+#4B E 5B
+
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), usoacademico, profchegaal)
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+sim <- filter(colunas, usoacademico == 2 & profchegaal == 2) 
+nao <- filter(colunas, usoacademico == 2 & profchegaal == 1) 
+ns <- filter(colunas, usoacademico == 2 & profchegaal == 3) 
+
+
+#quantidade de pessoas 
+sim1 <- nrow(sim)
+nao1 <- nrow(nao)
+ns1 <- nrow(ns)
+
+
+#guardando num lugar pra passar pro grafico
+x <- c(sim1,nao1,ns1)
+
+lbls <- c("Sim", "Não", "Não sei")
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Midias podem ser utilizadas e melhor forma de aproximação dos professores.")
+
+```
+
+## 
+- Há um empate em relação à opinião dos nossos entrevistados: cerca de 39,5% do público acredita que a prática de utilizar mídias em salas de aula seria de grande valia e também que traria uma maior aproximação dos professores com seus respectivos alunos.
+ -Enquanto isso, também 39,5% dos entrevistados defendem a utilização das mídias, mas não acreditam que traria benefícios para estreitar o vínculo professor/aluno. Já os 21,1% restantes das respostas acreditam na utilização das mídias para ensino, mas não sabem dizer se traria vantagem social aos envolvidos. 
+ -Isso nos mostra que, apesar dos nossos entrevistados serem alunos de tecnologia em sua grande maioria, ainda há uma certa dúvida e/ou receio quanto a utilização das mídias para fortalecer a relação entre professores e alunos.
+
+
+## Análise de opinião sobre mídia como ferramenta e sobre melhorar o resultado dos alunos
+
+- O gráfico a seguir mostra a opinião do público que apoia a utilização de mídias como ferramenta de aprendizagem de alunos e que também acredita ou não que essa prática traria melhores resultados para os mesmos.
+
+##
+``` {r, fig.align="center", echo=FALSE, warning=FALSE}
+
+#4b e 6b
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), usoacademico, melhoraresul)
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+
+sim <- filter(colunas, usoacademico == 2 & melhoraresul == 2) 
+nao <- filter(colunas, usoacademico == 2 & melhoraresul == 1) 
+ns <- filter(colunas, usoacademico == 2 & melhoraresul == 3) 
+
+
+#quantidade de pessoas 
+sim1 <- nrow(sim)
+nao1 <- nrow(nao)
+ns1 <- nrow(ns)
+
+
+
+#guardando num lugar pra passar pro grafico
+x <- c(sim1,nao1,ns1)
+
+lbls <- c("Sim", "Não", "Não sei")
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Midias podem ser utilizadas e melhora resultado dos alunos.")
+
+#-----------------------------------------------------------------------------------------------------
+
+```
+
+##
+- Cruzando nossas informações e criando o gráfico, podemos notar que a grande maioria dos nossos entrevistados acredita na utilização das mídias por meio de professores, seja para fortalecer a relação professor/aluno ou também para auxiliar no aprendizado e passagem de conteúdos escolares. Dessa forma, podemos notar que a adesão da tecnologia no meio estudantil está cada vez mais em ascensão, principalmente entre alunos que estudam esse assunto. Consideramos esse resultado positivo, pois a internet e as mídias em geral têm muito a oferecer que possa ser de grande valia para a assimilação de conteúdos. Além disso, trata-se de um resultado, em partes, esperado, já que o público entrevistado tem grande aderência às redes sociais e mídias em geral, muitas vezes utilizando-as para estudos e aprendizado a distância.
+
+
+
+## Análise de opinião sobre mídia como forma de aproximação e sobre melhorar o resultado dos alunos
+
+- O gráfico a seguir mostra a opinião do público que apoia a utilização de mídias como forma de aproximação dos professores e que também acredita ou não que essa prática traria melhores resultados para os mesmos.
+
+##
+``` {r, fig.align="center", echo=FALSE, warning=FALSE}
+
+#5B E 6B - quem marcou sim nas duas 
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), profchegaal, melhoraresul)
+totalalunos <- nrow(colunas)
+
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+filtro <- filter(colunas, profchegaal == 2 &  melhoraresul == 2)  
+
+#quantidade de pessoas 
+nroalunos <- nrow(filtro)
+
+#guardando num lugar pra passar pro grafico
+x <- c(totalalunos, nroalunos)
+
+lbls <- c("Sim", "Não; Não sei/Não tenho opinião")
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Melhor forma de aproximação e melhora resultado dos alunos.")
+
+
+#------------------------------------------------------------
+````
+
+
+##
+O resultados do gráfico “Melhor forma de aproximação e melhora resultado dos alunos” mostram que 78,2% das pessoas que responderam ambas perguntas acreditam que as mídias sociais são a melhor forma de aproximação de professores e alunos e também acreditam que a utilização delas melhora os resultados dos alunos. O restante, 21,8%, discorda que algumas dessas afirmações ou não sabem/não têm opinião.
+
+
+## Análise de opinião sobre mídia para melhorar resultados e como fonte de distração  
+- O gráfico abaixo mostra o cruzamento de respostas dos entrevistados que acreditam que as mídias utilizadas no meio educativo trariam melhores resultados, porém que também serviriam como fonte de distração.
+
+##
+``` {r, fig.align="center", echo=FALSE, warning=FALSE}
+#6B E 7.1B - quem marcou não na 6B e sim na 7.1B
+
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), melhoraresul, distracao)
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+sim <- filter(colunas, melhoraresul == 1 & distracao == 1)  
+nao <- filter(colunas, melhoraresul == 2 & distracao == 1)  
+ns <- filter(colunas, melhoraresul == 3 & distracao == 1)  
+
+#quantidade de pessoas 
+sim1 <- nrow(sim)
+nao1 <- nrow(nao)
+ns1 <- nrow(ns)
+
+#guardando num lugar pra passar pro grafico
+x <- c(sim1,nao1,ns1)
+lbls <- c("Não", "Sim", "Não sei/Não tenho opinião")
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Melhores resultados e é fonte de distração.")
+
+#------------------------------------------------------------
+```
+
+
+##
+ - Cruzando as informações e criando o gráfico, podemos notar que a grande maioria dos nossos entrevistados - cerca de 62,5% - acreditam que mesmo trazendo melhores resultados as mídias podem mascarar um real resultado devido ao uso indevido das mesmas para cópia de trabalhos e tarefas. 24,1% dos entrevistados não possui opinião sobre trazer melhores resultados e acreditam que as mesmas seriam grande fonte de distração e apenas 13,8% não acredita que as mídias trazem resultados melhores e além disso pensam que seria uma fonte de distração. Neste gráfico podemos ver que mesmo grande parte acreditando trazer melhores resultados ainda acreditam que os alunos se distraem com o uso das redes e não conseguiriam separar os momentos de uso para atividades escolares e os momentos de uso para o lazer.
+ 
+ 
+## Análise de opinião sobre mídia para melhorar resultados e sobre instituições usando por motivos promocionais  
+
+- O gráfico abaixo mostra a opinião de quem acredita que a mídia social é a melhor forma dos professores se aproximarem de seus alunos e sobre o número crescente de instituições educacionais está usando mídias sociais por motivos promocionais. 
+
+
+##
+``` {r, fig.align="center", echo=FALSE, warning=FALSE}
+#quem marcou sim na 5B e avaliação das midias na educação
+#5B E 8.2B
+
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), profchegaal, grandeuso)
+
+totalalunos <- nrow(colunas)
+
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+excelente <- filter(colunas, profchegaal == 2 & grandeuso == 1)
+bom <- filter(colunas, profchegaal == 2 & grandeuso == 2)
+indif <- filter(colunas, profchegaal == 2 & grandeuso == 3)
+ruim <- filter(colunas, profchegaal == 2 & grandeuso == 2)
+mtoruim <- filter(colunas, profchegaal == 2 & grandeuso == 2)
+
+#quantidade de pessoas 
+nroexc <- nrow(excelente)
+nrobom <- nrow(bom)
+nroindif <- nrow(indif)
+nroruim <- nrow(ruim)
+nromtoruim <- nrow(mtoruim)
+
+#guardando num lugar pra passar pro grafico
+x <- c(nroexc, nrobom, nroindif, nroruim, nromtoruim)
+#trasnformando em %
+
+lbls <- c("Excelente", "Bom", "Indiferente", "Ruim", "Muito Ruim")
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Avaliação dos alunos para as mídias sociais na educação.")
+
+#----------------------------------------------------------------------------
+```
+
+##
+Cruzando nossas informações e criando o gráfico, podemos notar que a maioria dos nossos entrevistados - cerca de 32,4% - é indiferente em relação a utilização das mídias sociais no meio da educação. Por outro lado, 21,6% afirma que essa prática seria válida e boa, apesar da mesma porcentagem crer que essa utilização seria “Ruim” e/ou “Muito Ruim”. Por fim, apenas 2,7% dos nossos entrevistados acredita que essa atividade seria excelente, tendo muito a agregar ao aluno. Nesse estudo, podemos ver uma relutância por meio dos entrevistados na utilização das mídias sociais no meio educativo, talvez por intensificarem a falta de atenção do aluno e promoverem a perda de foco.
+
+
+## Análise de opinião sobre mídias sociais utilizadas pelo público entre 16 e 20 anos
+- O gráfico abaixo nos mostra a aderência à determinadas redes sociais (WhatsApp, Facebook, Twitter, Snapchat, Instagram, Tumblr, Pinterest, Youtube, LinkedIn e Outros) pelo nosso público numa faixa etária de 16 a 20 anos. 
+
+
+##
+``` {r, fig.align="center", echo=FALSE, warning=FALSE}
+
+colunas <- select(as_data_frame(dados), idade, facebook, twitter, whatsapp, linkedin, youtube, instagram, snapchat, tumblr, pinterest, outras_plataformas)
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+#entre 16 e 20 anos
+facebook <- nrow(filter(colunas, idade == 1 & facebook == 1))
+twitter <- nrow(filter(colunas, idade == 1  & twitter == 1))
+whatsapp <- nrow(filter(colunas, idade == 1  & whatsapp == 1))
+linkedin <- nrow(filter(colunas, idade == 1  & linkedin == 1))
+youtube <- nrow(filter(colunas, idade == 1  & youtube == 1))
+instagram <- nrow(filter(colunas, idade == 1  & instagram == 1))
+snapchat <- nrow(filter(colunas, idade == 1  & snapchat == 1))
+tumblr <- nrow(filter(colunas, idade == 1  & tumblr == 1))
+pinterest <- nrow(filter(colunas, idade == 1  & pinterest == 1))
+outras_plataformas <- nrow(filter(colunas, idade == 1 & outras_plataformas == 1))
+
+
+#guardando num lugar pra passar pro grafico
+x <- c(facebook, twitter, whatsapp, linkedin, youtube, instagram, snapchat, tumblr, pinterest, outras_plataformas)
+
+lbls <- c(" Facebook", "Twitter", "WhatsApp", "Linkedln", "YouTube", "Instagram", "Snapchat", "Tumblr", "Pinterest", "Outro") 
+quantidade <- length(lbls)
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Mídias Sociais Utilizadas pelos Público entre 16 e 20 anos", col=cm.colors(quantidade))
+```
+
+##
+Questionamos nossos entrevistados acerca da rede social mais usada por eles no dia-a-dia e, como podemos notar avaliando o gráfico, a maior aceitação é relacionada ao WhatsApp, sendo utilizado por cerca de 21% da nossa amostra. Em segundo lugar encontra-se o Youtube com 20,2%, seguido pelo Facebook com 19,4% e pelo Instagram com 13,7%. Acreditamos que o resultado desse cruzamento de informações é bem característico da faixa etária avaliada, de fato: onde adolescentes passam a maior parte do tempo em redes sociais que promovem a socialização entre conhecidos e amigos como, por exemplo, WhatsApp, Facebook e Instagram. Possivelmente, a aderência ao Youtube diz respeito à visualização de clipes musicais e artísticos. 
+
+
+## Análise de opinião sobre mídias sociais utilizadas pelo público entre 21 e 25 anos
+- O gráfico abaixo nos mostra a aderência à determinadas redes sociais (WhatsApp, Facebook, Twitter, Snapchat, Instagram, Tumblr, Pinterest, Youtube, LinkedIn e Outros) pelo nosso público numa faixa etária de 21 a 25 anos. 
+
+
+##
+``` {r, fig.align="center", echo=FALSE, warning=FALSE}
+
+# entre 21 e 25 anos
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+#entre 16 e 20 anos
+facebook <- nrow(filter(colunas, idade == 2 & facebook == 1))
+twitter <- nrow(filter(colunas, idade == 2 & twitter == 1))
+whatsapp <- nrow(filter(colunas, idade == 2  & whatsapp == 1))
+linkedin <- nrow(filter(colunas, idade == 2  & linkedin == 1))
+youtube <- nrow(filter(colunas, idade == 2  & youtube == 1))
+instagram <- nrow(filter(colunas, idade == 2  & instagram == 1))
+snapchat <- nrow(filter(colunas, idade == 2  & snapchat == 1))
+tumblr <- nrow(filter(colunas, idade == 2  & tumblr == 1))
+pinterest <- nrow(filter(colunas, idade == 2  & pinterest == 1))
+outras_plataformas <- nrow(filter(colunas, idade == 2 &outras_plataformas == 1))
+
+
+#guardando num lugar pra passar pro grafico
+x <- c(facebook, twitter, whatsapp, linkedin, youtube, instagram, snapchat, tumblr, pinterest, outras_plataformas)
+
+lbls <- c(" Facebook", "Twitter", "WhatsApp", "Linkedln", "YouTube", "Instagram", "Snapchat", "Tumblr", "Pinterest", "Outro") 
+quantidade <- length(lbls)
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Mídias Sociais Utilizadas pelos Público entre 21 e 25 anos", col=topo.colors(quantidade))
+
+```
+
+##
+Questionamos nossos entrevistados acerca da rede social mais usada por eles no dia-a-dia e, como podemos notar avaliando o gráfico, a maior aceitação ainda é relacionada ao WhatsApp, sendo utilizado por cerca de 18,5% da nossa amostra. Em segundo lugar encontra-se um empate entre Youtube, Facebook e Instagram com 17,9% cada um, seguido pelo LinkedIn com 12,1%.Acreditamos que o resultado desse cruzamento de informações também é bem característico da faixa etária avaliada: onde há um crescimento na porcentagem de utilização do LinkedIn (provavelmente por busca de empregos e estágios, visto que a amostra deste gráfico encontra-se numa faixa etária mais interessada em ingressar no mercado de trabalho).
+
+## Análise sobre motivos porque os jovens de 16 a 20 anos usam mídias sociais 
+- O gráfico abaixo nos mostra o motivo da aderência à determinadas mídias por meio do nosso público presente na faixa etária de 16 a 20 anos.
+
+
+##
+``` {r, fig.align="center", echo=FALSE, warning=FALSE}
+
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), idade, contato, atualizado,	preencher,	encontrar,	compopiniao,	compfoto,	amigosja,	profnetwork	,novaamizade,	compdetalhe	,outros_motivos)
+
+#de 16 a 20 anos 
+contato <- nrow(filter(colunas, idade == 1 & contato == 1))
+atualizado <- nrow(filter(colunas, idade == 1 &  atualizado == 1))
+preencher <- nrow(filter(colunas, idade == 1 &  preencher == 1))
+encontrar <- nrow(filter(colunas, idade == 1 & encontrar == 1))
+compopiniao <- nrow(filter(colunas, idade == 1 & compopiniao == 1 ))
+compfoto <- nrow(filter(colunas, idade == 1 & compfoto == 1))
+amigosja <- nrow(filter(colunas, idade == 1 & amigosja == 1))
+profnetwork <- nrow(filter(colunas, idade == 1 & profnetwork == 1))
+novaamizade <- nrow(filter(colunas, idade == 1 & novaamizade == 1))
+compdetalhe <- nrow(filter(colunas, idade == 1 & compdetalhe == 1))
+outros_motivos <- nrow(filter(colunas, idade == 1 & outros_motivos == 1))
+
+#guardando num lugar pra passar pro grafico
+x <- c(contato, atualizado, preencher, encontrar, compopiniao, compfoto, amigosja, profnetwork, novaamizade, compdetalhe, outros_motivos)
+
+lbls <- c("Contato com o  que amigos estão fazendo", "Manter-se atualizado com notícias e eventos atuais", "Preencher o tempo livre", "Encontrar conteúdo interessante", "Compart. opiniões" , "Compart. fotos ou vídeos", "Amigos já estão neles", "Networking profissional", "Conhecer novas pessoas", "Compart. assuntos de trabalho", "Outras razões") 
+quantidade <- length(lbls)
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Motivos pelos quais pessoas entre 16 e 20 anos utilizam", col=rainbow(quantidade))
+
+```
+
+##
+Segundo nosso gráfico, em primeiro lugar encontra-se a porcentagem dos nossos entrevistados que utilizam as mídias apenas para passar o tempo, somando cerca de 16,3%. Já em segundo lugar, estão presentes aqueles que acessam as mídias com o objetivo de encontrar conteúdos interessantes, totalizando 15,6%. Continuando nossa análise, 15% representam aqueles entrevistados que utilizam as mídias para manter-se atualizados com notícias e eventos atuais e 14,3% representam aqueles que buscam apenas contato com o que os amigos estão fazendo. Por fim, as opções menos votadas são: para conhecer novas pessoas (8,2%), networking profissional (7,5%), compartilhamento de fotos e vídeos (6,8%), por causa de amigos que já estão conectados nas mídias (6,8%), para o compartilhamento de opiniões (6,1%) e para o compartilhamento de assuntos de trabalho (3,4%). Podemos notar que nossos entrevistados abrangem diversos motivos para a utilização das mídias no dia-a-dia e acreditamos que isso se dá graças a versatilidade do mundo da internet.
+
+## Análise sobre motivos porque jovens de 21 e 25 anos usam mídias sociais  
+- O gráfico abaixo nos mostra o motivo da aderência à determinadas mídias por meio do nosso público presente na faixa etária de 21 a 25 anos. 
+
+
+##
+``` {r, fig.align="center", echo=FALSE, warning=FALSE}
+
+#21 e 25 anos 
+contato <- nrow(filter(colunas, idade == 2 & contato == 1))
+atualizado <- nrow(filter(colunas, idade == 2 &  atualizado == 1))
+preencher <- nrow(filter(colunas, idade ==2 &  preencher == 1))
+encontrar <- nrow(filter(colunas, idade == 2 & encontrar == 1))
+compopiniao <- nrow(filter(colunas, idade == 2 & compopiniao == 1 ))
+compfoto <- nrow(filter(colunas, idade == 2 & compfoto == 1))
+amigosja <- nrow(filter(colunas, idade == 2 & amigosja == 1))
+profnetwork <- nrow(filter(colunas, idade == 2 & profnetwork == 1))
+novaamizade <- nrow(filter(colunas, idade == 2 & novaamizade == 1))
+compdetalhe <- nrow(filter(colunas, idade == 2 & compdetalhe == 1))
+outros_motivos <- nrow(filter(colunas, idade == 2 & outros_motivos == 1))
+
+#guardando num lugar pra passar pro grafico
+x <- c(contato, atualizado, preencher, encontrar, compopiniao, compfoto, amigosja, profnetwork, novaamizade, compdetalhe, outros_motivos)
+
+lbls <- c("Contato com o  que amigos estão fazendo", "Manter-se atualizado com notícias e eventos atuais", "Preencher o tempo livre", "Encontrar conteúdo interessante", "Compart. opiniões" , "Compart. fotos ou vídeos", "Amigos já estão neles", "Networking profissional", "Conhecer novas pessoas", "Compart. assuntos de trabalho", "Outras razões") 
+quantidade <- length(lbls)
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Motivos pelos quais pessoas entre 21 e 25 anos utilizam", col=rainbow(quantidade))
+
+#-------------------------------------------------------------------------------------------------
+```
+
+
+##
+Segundo nosso gráfico, em primeiro lugar encontra-se a porcentagem dos nossos entrevistados que utilizam as mídias para encontrar conteúdos interessantes, somando cerca de 15,4%. Já em segundo lugar, estão presentes aqueles que acessam as mídias com o objetivo de acompanhar o que os amigos estão fazendo, totalizando 14,4%. Continuando nossa análise, 13,8% representam aqueles entrevistados que utilizam as mídias para manter-se atualizados com notícias e eventos atuais e 13,3% representam aqueles interessados apenas em preencher o tempo livre. Podemos notar que nossos entrevistados abrangem diversos motivos para a utilização das mídias no dia-a-dia e acreditamos que isso se dá graças a versatilidade do mundo da internet.
+
+## Análise sobre situação trabalhista atual do público que utiliza LinkedIn  
+- O gráfico abaixo nos mostra a situação trabalhista atual do público que utiliza LinkedIn.
+
+##
+``` {r, fig.align="center", echo=FALSE, warning=FALSE}
+#situação atual das pessoas que usam linkedin
+
+colunas <- select(as_data_frame(dados), trabalha, linkedin)
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+desempregado <- nrow(filter(colunas,  trabalha == 1 & linkedin == 1)) 
+jorparcial <- nrow(filter(colunas,  linkedin == 1 & trabalha == 2)) 
+jorintegral <- nrow(filter(colunas,  linkedin == 1 &  trabalha == 3)) 
+estagiario <- nrow(filter(colunas,  linkedin == 1 & trabalha == 4))
+contapropria <- nrow(filter(colunas,  linkedin == 1 &  trabalha == 5))
+afastado <- nrow(filter(colunas,  linkedin == 1 &  trabalha == 6))
+aposentado <- nrow(filter(colunas,  linkedin == 1 &  trabalha == 7))
+bolsista <- nrow(filter(colunas,  linkedin == 1 &  trabalha == 8))
+
+
+#guardando num lugar pra passar pro grafico
+x <- c(desempregado, jorparcial, jorintegral, estagiario, contapropria, afastado, aposentado, bolsista)
+
+lbls <- c("Desempregado", "Jornada parcial", "Jornada integral", "Estagiário", "Conta Prórpia", "Afastado", "Aposentado", "Bolsista") 
+quantidade <- length(lbls)
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+barplot(x, legend= lbls, main ="Situação Trabalhista Atual do Público que usa Linkedin",  xlab="Situação", ylab="Quantidade público", col=rainbow(quantidade))
+
+```
+
+
+##
+O gráfico de “Situação trabalhista do público que usa LinkedIn” mostra que dentre os participantes da pesquisa que utilizam o LinkedIn, os estagiários e colaboradores de tempo integral estão empatados com 30.6% cada. Seguindo na ordem decrescente, temos os desempregados, que somam 27,8% dos participantes e bolsistas com 8,3%. Os perfis de pessoas com conta própria, afastadas e aposentadas, dentre os pesquisados, são 0%.
+
+## Análise sobre melhora de resultados e troca de arquivos  
+- O gráfico abaixo representa como os participantes julgam que os alunos alcançarão melhores resultados se as mídias sociais estiverem integradas às aulas e/ou atividades e que avaliam os membros dos grupos poderem trocar arquivos, links, informações, pesquisas e vídeos rapidamente como excelente.
+
+
+
+##
+``` {r, fig.align="center", echo=FALSE, warning=FALSE}
+#-----------------------------------------------------------------------------------------------------------
+#6B e 8.4B - quem classifica como excelente e respondeu sim, nao e não sei na 6B
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), melhoraresul, trocainfo)
+
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+sim <- filter(colunas, melhoraresul == 1 & trocainfo == 1)  
+nao <- filter(colunas, melhoraresul == 2 & trocainfo == 1)  
+ns <- filter(colunas, melhoraresul == 3 & trocainfo == 1)  
+
+#quantidade de pessoas 
+sim1 <- nrow(sim)
+nao1 <- nrow(nao)
+ns1 <- nrow(ns)
+
+
+#guardando num lugar pra passar pro grafico
+x <- c(sim1,nao1,ns1)
+lbls <- c("Não", "Sim", "Não sei/Não tenho opinião")
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+
+pie(x, labels = lbls, main ="Melhora resultado e troca de arquivos.")
+
+```
+
+##
+Exatamente 50% dos entrevistados acreditam que as mídias sociais melhoram o desempenho dos alunos e também a troca de arquivos entre alunos e professores. Um quarto das pessoas não acreditam que elas não melhoram os resultados  ou a troca de arquivo e 25% não souberam responder ou não tinham opinião formada sobre o assunto.
+
+## Análise da relação de uso do Pinterest  
+
+- O gráfico abaixo mostra que dentre os entrevistados que utilizam o pinterest quais acham excelente,bom,indiferente, ruim ou muito ruim o uso da mídia para compartilhamento de quadros virtuais e conteúdos multimídia entre os alunos. 
+
+
+##
+``` {r, fig.align="center", echo=FALSE, warning=FALSE}
+#--------------------------------------------------------------------------------------------------------------
+
+  #1.9B e 8.6B - 
+  #faz o select das colunas que queremos e guarda numa "variável"
+  colunas <- select(as_data_frame(dados), pinterest, quadrovirtual)
+
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+exc <- nrow(filter(colunas, quadrovirtual == 1 & pinterest == 1))  
+bom <- nrow(filter(colunas, quadrovirtual == 2 & pinterest == 1))  
+ind <- nrow(filter(colunas, quadrovirtual == 3 & pinterest == 1))  
+ruim <- nrow(filter(colunas, quadrovirtual == 4 & pinterest == 1))  
+mtoruim <- nrow(filter(colunas, quadrovirtual == 5 & pinterest == 1))  
+
+
+#guardando num lugar pra passar pro grafico
+x <- c(exc,bom, ind, ruim, mtoruim)
+lbls <- c("Excelente", "Bom", "Indiferente", "Ruim", "Muito Ruim")
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Relação Pinterest")
+
+```
+
+##
+Cruzando nossas informações e criando o gráfico, podemos notar que a maioria dos nossos entrevistados - cerca de 46,2% - acredita que seria “Bom” o uso e 30,8% acreditam que seria “Excelente”, o que podemos interpretar que nossos entrevistados acham que agregaria aos alunos. Por outro lado, 15,4% acreditam que o uso seria “Ruim” e 0% que seria “Muito ruim”, mostrando que uma pequena parcela dos nossos entrevistados acreditam que seria algo maléfico para os alunos. Além disso 7,7% se mostraram indiferentes quanto o uso. 
+
+
+## Análise da relação de uso do Facebook  
+- O gráfico abaixo mostra que dentre os entrevistados que utilizam o facebook quais acham excelente,bom,indiferente, ruim ou muito ruim o uso de grupos do facebook pelas escolas para fazer a comunicação com os alunos. 
+
+
+##
+``` {r, fig.align="center", echo=FALSE, warning=FALSE}
+#-------------------------------------------------------------------------------
+
+#1.9B e 8.6B - 
+#faz o select das colunas que queremos e guarda numa "variável"
+colunas <- select(as_data_frame(dados), facebook, facegrupo)
+
+
+#filtra de acordo com os critérios que estabelecermos, como se fosse o where do sql (também ta guardando numa variável)
+exc <- nrow(filter(colunas, facegrupo == 1 & facebook == 1))  
+bom <- nrow(filter(colunas, facegrupo == 2 & facebook == 1))  
+ind <- nrow(filter(colunas, facegrupo == 3 & facebook == 1))  
+ruim <- nrow(filter(colunas, facegrupo == 4 & facebook == 1))  
+mtoruim <- nrow(filter(colunas, facegrupo == 5 & facebook == 1))  
+
+
+#guardando num lugar pra passar pro grafico
+x <- c(exc,bom, ind, ruim, mtoruim)
+lbls <- c("Excelente", "Bom", "Indiferente", "Ruim", "Muito Ruim")
+piepercent<- round(100*x/sum(x), 1)
+lbls <- paste(lbls, piepercent) # add percents to labels 
+lbls <- paste(lbls,"%",sep="") # ad % to labels 
+pie(x, labels = lbls, main ="Relação Facebook")
+```
+
+
+##
+Cruzando nossas informações e criando o gráfico, podemos notar que a maioria dos nossos entrevistados - cerca de 51,7% - acredita que seria “Bom” o uso e 22,4% acreditam que seria “Excelente”, o que podemos interpretar que nossos entrevistados acham que agregaria aos alunos. Por outro lado, os mesmos 22,4% que acham excelente também acham que seria “Indiferente” e não agregaria em nada. Apenas 3,4% acreditam que o uso seria “Ruim” e 0% que seria “Muito ruim”, mostrando que poucos dos nossos entrevistados acreditam que seria algo maléfico para os alunos.
+
+
+##Conclusão
+- Foram analisadas as amostras populacionais e sua utilização das mídias sociais 
+- Pode-se comprovar padrões de conceitos estabelecidos pelos sociólogos referentes à geração Y
+- Pode-se extrair melhorias para às aulas, para professores e alunos
+- Pode-se dizer que o uso da tecnologia impacta em muitos fatores relacionados aos alunos
+- Como sugestão, fica a tentativa de aumentar a amostra para que os dados sejam ainda mais precisos na próxima pesquisa. 
+
